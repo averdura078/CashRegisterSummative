@@ -40,14 +40,8 @@ namespace CashRegisterSummative
         double tenderedAmount = 0;
         double changeAmount = 0;
 
-        //3 global variables to hold the 3 different item prices.
-        //Global variable to hold total cost of order
-        //Global variable to hold tax rate of 13%, (0.13) 
-        //Global variable to hold value of tax amount
-        //Global variable to hold total cost including tax
-        //Initialize all the above variables to 0. 
-        //Global variable to hold the amount tendered, (the amount the customer hands over to pay for the bill) 
-        //Global variable to hold the amount of change required.
+        //easter egg
+        int clickCounter = 2;
 
         public Form1()
         {
@@ -61,9 +55,14 @@ namespace CashRegisterSummative
         private void totalsButton_Click(object sender, EventArgs e)
         {
             //reset from error
-            subtotalOutput.BackColor = Color.LightSkyBlue;
-            taxOutput.BackColor = Color.LightSkyBlue;
-            totalpriceOutput.BackColor = Color.LightSkyBlue;
+            subtotalOutput.BackColor = Color.Transparent;
+            taxOutput.BackColor = Color.Transparent;
+            totalpriceOutput.BackColor = Color.Transparent;
+            subtotalOutput.Text = "";
+            taxOutput.Text = "";
+            totalpriceOutput.Text = "";
+            Refresh();
+            Thread.Sleep(200);
             subtotalOutput.Font = new Font("Microsoft Uighur", 18, FontStyle.Regular);
 
             try
@@ -84,12 +83,15 @@ namespace CashRegisterSummative
 
                 //display totals to output labels
                 subtotalOutput.Text = $"{subtotalAmount.ToString("C")}";
+                Refresh();
+                Thread.Sleep(250);
                 taxOutput.Text = $"{taxAmount.ToString("C")}";
+                Refresh();
+                Thread.Sleep(250);
                 totalpriceOutput.Text = $"{totalCost.ToString("C")}";
 
                 //enable next button
                 changeButton.Enabled = true;
-
             }
             catch
             {
@@ -105,13 +107,18 @@ namespace CashRegisterSummative
                 //play error sound effect
                 SoundPlayer sp = new SoundPlayer(Properties.Resources.error);
                 sp.Play();
+
+                //keep other buttons disabled
+                changeButton.Enabled = false;
+                printReceiptButton.Enabled = false;
             }
         }
 
         private void changeButton_Click(object sender, EventArgs e)
         {
             //reset from error
-            changeOutput.BackColor = Color.LightSkyBlue;
+            changeOutput.BackColor = Color.Transparent;
+            changeOutput.Text = "";
 
             try
             {
@@ -124,8 +131,11 @@ namespace CashRegisterSummative
 
                 if (tenderedAmount < totalCost)
                 {
-                    SoundPlayer iferror = new SoundPlayer(Properties.Resources.error);
-                    iferror.Play();
+                    SoundPlayer sp2 = new SoundPlayer(Properties.Resources.error);
+                    sp2.Play();
+                    changeOutput.BackColor = Color.Red;
+                    changeOutput.Text = $"INPUT ERROR";
+                    printReceiptButton.Enabled = false;
                 }
                 else
                 {
@@ -142,14 +152,16 @@ namespace CashRegisterSummative
             catch
             {
                 //display error message to user
-                changeOutput.Text = $"INPUT ERROR.";
+                changeOutput.Text = $"INPUT ERROR";
                 changeOutput.BackColor = Color.Red;
 
                 //play error sound effect
                 SoundPlayer sp = new SoundPlayer(Properties.Resources.error);
                 sp.Play();
-            }
 
+                //keep next button disabled
+                printReceiptButton.Enabled = false;
+            }
         }
 
         private void printReceiptButton_Click(object sender, EventArgs e)
@@ -219,15 +231,18 @@ namespace CashRegisterSummative
             print.Play();
             Refresh();
 
+            //play chaching sound
+            SoundPlayer sp2 = new SoundPlayer(Properties.Resources.chaching);
+            sp2.Play();
         }
 
         private void newOrderButton_Click(object sender, EventArgs e)
         {
-            //play error sound effect
+            //play sound effect
             SoundPlayer sp = new SoundPlayer(Properties.Resources.success);
             sp.Play();
 
-            //empty all outputs of text (reset for new inputs)
+            //empty all text (reset for new inputs)
             canvasesInput.Text = $"";
             pencilsInput.Text = $"";
             paintsInput.Text = $"";
@@ -240,6 +255,72 @@ namespace CashRegisterSummative
             changeOutput.Text = $"";
 
             receiptOutput.Text = $"";
+
+            //reset from error
+            subtotalOutput.BackColor = Color.Transparent;
+            taxOutput.BackColor = Color.Transparent;
+            totalpriceOutput.BackColor = Color.Transparent;
+            subtotalOutput.Font = new Font("Microsoft Uighur", 18, FontStyle.Regular);
+            changeOutput.BackColor = Color.Transparent;
+        }
+
+        private void titleLabel_Click(object sender, EventArgs e)
+        {
+            clickCounter += +1;
+
+            //empty all text (function as a second "NEW ORDER" button)
+            canvasesInput.Text = $"";
+            pencilsInput.Text = $"";
+            paintsInput.Text = $"";
+
+            subtotalOutput.Text = $"";
+            taxOutput.Text = $"";
+            totalpriceOutput.Text = $"";
+
+            tenderedInput.Text = $"";
+            changeOutput.Text = $"";
+
+            receiptOutput.Text = $"";
+
+            if (clickCounter % 3 == 1)
+            {
+                BackColor = Color.LightSeaGreen;
+                titleLabel.BackColor = Color.Orange;
+                totalsButton.BackColor = Color.Orange;
+                changeButton.BackColor = Color.Orange;
+                printReceiptButton.BackColor = Color.Orange;
+                newOrderButton.BackColor = Color.Orange;
+
+                subtotalOutput.BackColor = Color.LightSeaGreen;
+                taxOutput.BackColor = Color.LightSeaGreen;
+                totalpriceOutput.BackColor = Color.LightSeaGreen;
+            }
+            else if (clickCounter % 3 == 2)
+            {
+                BackColor = Color.LightSkyBlue;
+                titleLabel.BackColor = Color.Thistle;
+                totalsButton.BackColor = Color.Thistle;
+                changeButton.BackColor = Color.Thistle;
+                printReceiptButton.BackColor = Color.Thistle;
+                newOrderButton.BackColor = Color.Thistle;
+
+                subtotalOutput.BackColor = Color.LightSkyBlue;
+                taxOutput.BackColor = Color.LightSkyBlue;
+                totalpriceOutput.BackColor = Color.LightSkyBlue;
+            }
+            else
+            {
+                BackColor = Color.DeepPink;
+                titleLabel.BackColor = Color.LightPink;
+                totalsButton.BackColor = Color.LightPink;
+                changeButton.BackColor = Color.LightPink;
+                printReceiptButton.BackColor = Color.LightPink;
+                newOrderButton.BackColor = Color.LightPink;
+
+                subtotalOutput.BackColor = Color.DeepPink;
+                taxOutput.BackColor = Color.DeepPink;
+                totalpriceOutput.BackColor = Color.DeepPink;
+            }
         }
     }
 }

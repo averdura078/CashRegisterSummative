@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.numOfCanvasesLabel = new System.Windows.Forms.Label();
             this.numOfPencilsLabel = new System.Windows.Forms.Label();
             this.numOfPaintsLabel = new System.Windows.Forms.Label();
@@ -87,12 +88,13 @@
             // 
             this.titleLabel.BackColor = System.Drawing.Color.Plum;
             this.titleLabel.Font = new System.Drawing.Font("Microsoft Uighur", 36F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.titleLabel.Location = new System.Drawing.Point(-9, 1);
+            this.titleLabel.Location = new System.Drawing.Point(-9, -2);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(585, 51);
+            this.titleLabel.Size = new System.Drawing.Size(585, 54);
             this.titleLabel.TabIndex = 3;
             this.titleLabel.Text = "The Little Art Boutique";
             this.titleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.titleLabel.Click += new System.EventHandler(this.titleLabel_Click);
             // 
             // totalsButton
             // 
@@ -330,6 +332,7 @@
             this.Controls.Add(this.numOfPaintsLabel);
             this.Controls.Add(this.numOfPencilsLabel);
             this.Controls.Add(this.numOfCanvasesLabel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Cash Register";
             this.ResumeLayout(false);
